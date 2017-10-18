@@ -11,7 +11,8 @@ import { HomePage } from '../pages/home/home';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { HttpModule } from "@angular/http";
-import { CarroProvider } from '../providers/carro/carro';
+import { CarroProvider } from '../providers/carro/carro.service';
+import { AgendamentoProvider } from '../providers/agendamento/agendamento.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CarroProvider } from '../providers/carro/carro';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    CarroProvider
+    CarroProvider,
+    AgendamentoProvider
   ]
 })
 export class AppModule {}
