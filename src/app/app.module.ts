@@ -13,6 +13,7 @@ import 'rxjs/add/operator/toPromise';
 import { HttpModule } from "@angular/http";
 import { CarroProvider } from '../providers/carro/carro.service';
 import { AgendamentoProvider } from '../providers/agendamento/agendamento.service';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,12 @@ import { AgendamentoProvider } from '../providers/agendamento/agendamento.servic
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot({
+      name: 'aluracar',
+      storeName: 'agendamentos',
+      driverOrder: ['indexeddb']
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
