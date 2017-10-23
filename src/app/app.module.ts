@@ -8,21 +8,24 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
 // ======================================================================
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
-import { HttpModule } from "@angular/http";
-import { CarroProvider } from '../providers/carro/carro.service';
-import { AgendamentoProvider } from '../providers/agendamento/agendamento.service';
+import { HttpClientModule } from "@angular/common/http";
 import { IonicStorageModule } from '@ionic/storage';
+import { ApiProvider } from '../providers/api/api.service';
+import { CarrosProvider } from '../providers/api/carros/carros.service';
+import { AgendamentosProvider } from '../providers/api/agendamentos/agendamentos.service';
+import { EscolhaPage } from '../pages/escolha/escolha';
+import { CadastroPage } from '../pages/cadastro/cadastro';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    EscolhaPage,
+    CadastroPage
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot({
       name: 'aluracar',
@@ -33,14 +36,17 @@ import { IonicStorageModule } from '@ionic/storage';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    EscolhaPage,
+    CadastroPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    CarroProvider,
-    AgendamentoProvider
+    ApiProvider,
+    CarrosProvider,
+    AgendamentosProvider
   ]
 })
 export class AppModule {}

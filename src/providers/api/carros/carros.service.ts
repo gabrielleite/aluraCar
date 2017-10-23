@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
+import { Carro } from '../../../models/carro';
+import { ApiProvider } from '../api.service';
 
 @Injectable()
-export class CarroProvider {
+export class CarrosProvider {
+  _url: string;
+  _http: HttpClient;
 
-  // private url: string = 'https://example.com/api/v1';
-  private _url: string = 'https://aluracar.herokuapp.com';
-  constructor(private _http: Http) {
-    console.log('Hello AluraCarApiProvider Provider');
+  constructor(private _api: ApiProvider) {
+    this._http = this._api.http;
+    this._url = this._api.url;
   }
 
-  lista():Promise<any> {
+  lista(): Observable<Carro[]> {
     return this._http
-            .get(this._url)
-            .map(res => res.json())
-            .toPromise();
+            .get<Carro[]>(this._url);
     // .then(carros => {
     //   this.carros = carros;
     //   loader.dismiss();

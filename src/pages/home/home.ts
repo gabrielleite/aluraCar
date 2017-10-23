@@ -1,59 +1,64 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, LoadingController, AlertController } from 'ionic-angular';
-import { CarroProvider } from '../../providers/carro/carro';
+import { HttpErrorResponse } from '@angular/common/http';
+import { CarrosProvider } from '../../providers/api/carros/carros.service';
+import { EscolhaPage } from '../escolha/escolha';
+import { Carro } from '../../models/carro';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage implements OnInit {
-  public carros;
+  private _carros: Carro[];
 
   constructor(public navCtrl: NavController,
-    private _carroProvider: CarroProvider,
+    private _carrosProvider: CarrosProvider,
     private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController) {
-        // this.carros = [
-        //   {nome:'Azera V6',preco:85000},
-        //   {nome:'Onix 1.6',preco:35000},
-        //   {nome:'Fiesta 2.0',preco:52000},
-        //   {nome:'C3 1.0',preco:22000},
-        //   {nome:'Uno Fire',preco:11000},
-        //   {nome:'Sentra 2.0',preco:53000},
-        //   {nome:'Astra Sedan',preco:39000},
-        //   {nome:'Vectra 2.0 Turbo',preco:37000},
-        //   {nome:'Hilux 4x4',preco:90000},
-        //   {nome:'Montana Cabine dupla',preco:57000},
-        //   {nome: 'Outlander 2.4',preco:99000},
-        //   {nome:'Brasilia Amarela',preco:9500},
-        //   {nome:'Omega Hatch',preco:8000}
-        // ];
     }
 
+    ionViewDidLoad() {
+      console.log('ionViewDidLoad HomePage');
+    }
+  
     ngOnInit(): void {
+      console.log('ngOnInit HomePage');
       let loader = this._loadingCtrl.create({
         content: 'Aguarde o carregamento...'
       });
       loader.present();
 
-      this._carroProvider
+      this._carrosProvider
         .lista()
-        .then(carros => {
-          this.carros = carros;
-          loader.dismiss();
-        })
-        .catch(err => {
-          console.log('deu erro');
-          console.log(err);
-          loader.dismiss();
-          this._alertCtrl
-            .create({
-              title: 'Falha na conexão!',
-              subTitle: 'Não foi possível obter a lista de carros. Tente mais tarde.' ,
-              buttons: [{ text: 'Estou ciente' }]
-            })
-            .present();
-        });
+        .subscribe(
+          (carros: Carro[]) => {
+            this._carros = carros;
+            loader.dismiss();
+          },
+          (err: HttpErrorResponse) => {
+            console.log('deu erro');
+            console.log(err);
+            loader.dismiss();
+            this._alertCtrl
+              .create({
+                title: 'Falha na conexão!',
+                subTitle: 'Não foi possível obter a lista de carros. Tente mais tarde.' ,
+                buttons: [{ text: 'Estou ciente' }]
+              })
+              .present();
+          }
+        );
     }
 
+    seleciona(carro) {
+      console.log(carro);
+      this.navCtrl.push(EscolhaPage, {
+        carroSelecionado: carro
+      });
+    }
+
+    get carros() {
+      return this._carros;
+    }
 }
