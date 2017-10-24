@@ -1,4 +1,4 @@
 export interface Carro {
-    nome: String;
+    nome: string;
     preco: number
 }

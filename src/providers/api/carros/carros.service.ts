@@ -15,24 +15,14 @@ export class CarrosProvider {
   }
 
   lista(): Observable<Carro[]> {
+    // para receber a resposta como um todo, incluindo os cabeçalhos
+    // e não apenas o corpo
+    // .get<MyJsonData>('/data.json', {observe: 'response'})
+
+    // para obter a resposta em outro formato
+    // .get('/textfile.txt', {responseType: 'text'})
     return this._http
             .get<Carro[]>(this._url);
-    // .then(carros => {
-    //   this.carros = carros;
-    //   loader.dismiss();
-    // })
-    // .catch(err => {
-    //   console.log('deu erro');
-    //   console.log(err);
-    //   loader.dismiss();
-    //   this._alertCtrl
-    //     .create({
-    //       title: 'Falha na conexão!',
-    //       subTitle: 'Não foi possível obter a lista de carros. Tente mais tarde.' ,
-    //       buttons: [{ text: 'Estou ciente' }]
-    //     })
-    //     .present();
-    // });
   }
 
 }

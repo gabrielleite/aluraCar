@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiProvider } from '../api.service';
+import { Agendamento } from '../../../models/agendamento';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AgendamentosProvider {
@@ -12,9 +14,9 @@ export class AgendamentosProvider {
     this._http = this._api.http;
   }
 
-  agenda(modeloCarro, precoTotal, nomeUsuario, endereco, email, dataAgendamento) {
+  agenda(agendamento: Agendamento): Observable<Agendamento> {
     return this._http
-            .get(`${this._url}/salvarpedido?carro=${modeloCarro}&nome=${nomeUsuario}&preco=${precoTotal}&endereco=${endereco}&email=${email}&dataAgendamento=${dataAgendamento}`);
+            .get<Agendamento>(`${this._url}/salvarpedido?carro=${agendamento.carro}&nome=${agendamento.cliente}&preco=${agendamento.precoTotal}&endereco=${agendamento.endereco}&email=${agendamento.email}&dataAgendamento=${agendamento.data}`)
       // .then(() => alert('Sucesso'))
       // .catch(erro => alert('Falha'));
   }

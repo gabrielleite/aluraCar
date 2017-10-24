@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { NavLifecycles } from '../../utils/ionic/nav-lifecycles';
 import { Acessorio } from '../../models/acessorio';
+import { CadastroPage } from '../cadastro/cadastro';
 
 
 @Component({
@@ -36,6 +37,13 @@ export class EscolhaPage implements OnInit, NavLifecycles {
       ligado ?
           this._precoTotal += acessorio.preco :
           this._precoTotal -= acessorio.preco;
+  }
+
+  avancaAgendamento() {
+    this.navCtrl.push(CadastroPage, {
+      carro: this._carro,
+      precoTotal: this._precoTotal
+    });
   }
 
   get carro() {
