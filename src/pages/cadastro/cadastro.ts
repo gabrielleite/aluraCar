@@ -3,8 +3,15 @@ import { IonicPage, NavController, NavParams, Alert, AlertController } from 'ion
 import { Carro } from '../../models/carro';
 import { Agendamento } from '../../models/agendamento';
 import { AgendamentosProvider } from '../../providers/api/agendamentos/agendamentos.service';
+import { AgendamentoDaoProvider } from '../../providers/dao/agendamento.dao';
 import { HomePage } from '../home/home';
 import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'page-cadastro',
@@ -25,6 +32,7 @@ export class CadastroPage {
     public navParams: NavParams,
     private _alertCtrl: AlertController,
     private _agendamentosProvider: AgendamentosProvider,
+    private _agendamentoDaoProvider: AgendamentoDaoProvider,
     private _storage: Storage) {
       this._carro = this.navParams.get('carro');
       this._precoTotal = this.navParams.get('precoTotal');
@@ -48,37 +56,100 @@ export class CadastroPage {
 
       return ;
     }
+
     let agendamento: Agendamento = {
       carro: this._carro.nome,
       precoTotal: this._precoTotal,
       cliente: this.nome,
       endereco: this.endereco,
       email: this.email,
-      data: this.data
+      data: this.data,
+      confirmado: false
     };
+
+    this._agendamentoDaoProvider
+      .ehAgendamentoDuplicado(agendamento)
+      .then(duplicado => {
+        console.log(duplicado);
+        if (duplicado) throw new Error('Este agendamento já foi realizado!');
+        this.confirmaAgendamento(agendamento);
+        // .then(() => agendamento.confirmado = true, err => console.log(err))
+        // .then(() => this._dao.salva(agendamento))
+        // .then(() => agendamento.confirmado);
+      })
+      .catch(() => {
+        this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
+        this._alerta.present();
+      });
+
+
+    // Observable.forkJoin(
+    //   [this._agendamentosProvider
+    //   .agenda(agendamento)
+    //   .map(() => agendamento.confirmado = true),
+    //   this.salva(agendamento)]
+    // ).subscribe(
+    //   () => {
+    //     this._alerta.setSubTitle('Agendamento realizado com sucesso.');
+    //     this._alerta.present();
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //     this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
+    //     this._alerta.present();
+    //   },
+    //   () => {
+    //     console.log("terminou");
+    //   }
+    // );
     
+    // this._agendamentosProvider
+    //   .agenda(agendamento)
+    //   .do(() => agendamento.confirmado = true)
+    //   // .flatMap(() => this.salva(agendamento))
+    //   // .finally(() => this.salva(agendamento))
+    //   .subscribe(
+    //     () => {
+    //       this._alerta.setSubTitle('Agendamento realizado com sucesso.');
+    //       this._alerta.present();
+    //     },
+    //     err => {
+    //       console.log(err);
+    //       this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
+    //       this._alerta.present();
+    //     },
+    //     () => {
+    //       console.log("terminou");
+    //     }
+    //   );
+  }
+
+  confirmaAgendamento(agendamento: Agendamento) {
     this._agendamentosProvider
       .agenda(agendamento)
       .subscribe(
         () => {
-          this.salva(agendamento, true);
           this._alerta.setSubTitle('Agendamento realizado com sucesso.');
-          this._alerta.present();
         },
-        err => {
+        (err) => {
           console.log(err);
-          this.salva(agendamento, false);
           this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
+        },
+        () => {
+          console.log("terminou");
+          this._agendamentoDaoProvider.salva(agendamento);
           this._alerta.present();
         }
-      )
+      );
   }
 
-  salva(agendamento: Agendamento, confirmado: boolean) {
-    agendamento.confirmado = confirmado;
-    let key = agendamento.email + agendamento.data.substr(0,10);
-    this._storage.set(key, agendamento);
-  }
+  // salva(agendamento: Agendamento) {
+  //   let a = 1;
+  //   if (a==1) throw new Error("bla bla bla");
+  //   let key = agendamento.email + agendamento.data.substr(0,10);
+  //   // return this._storage.set(key, agendamento);
+  //   return Observable.fromPromise(this._storage.set(key, agendamento));
+  // }
 
   get carro() {
     return this._carro;

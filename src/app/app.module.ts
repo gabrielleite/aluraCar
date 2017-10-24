@@ -13,6 +13,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { ApiProvider } from '../providers/api/api.service';
 import { CarrosProvider } from '../providers/api/carros/carros.service';
 import { AgendamentosProvider } from '../providers/api/agendamentos/agendamentos.service';
+import { AgendamentoDaoProvider } from '../providers/dao/agendamento.dao';
 import { EscolhaPage } from '../pages/escolha/escolha';
 import { CadastroPage } from '../pages/cadastro/cadastro';
 
@@ -46,7 +47,8 @@ import { CadastroPage } from '../pages/cadastro/cadastro';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiProvider,
     CarrosProvider,
-    AgendamentosProvider
+    AgendamentosProvider,
+    AgendamentoDaoProvider
   ]
 })
 export class AppModule {}
