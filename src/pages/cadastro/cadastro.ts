@@ -69,18 +69,26 @@ export class CadastroPage {
 
     this._agendamentoDaoProvider
       .ehAgendamentoDuplicado(agendamento)
-      .then(duplicado => {
-        console.log(duplicado);
-        if (duplicado) throw new Error('Este agendamento já foi realizado!');
-        this.confirmaAgendamento(agendamento);
-        // .then(() => agendamento.confirmado = true, err => console.log(err))
-        // .then(() => this._dao.salva(agendamento))
-        // .then(() => agendamento.confirmado);
+      .flatMap((ehDuplicado) => {
+        if (ehDuplicado) new Error('Agendamento existente!');
+        return this._agendamentoDaoProvider.salva(agendamento);
       })
-      .catch(() => {
-        this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
-        this._alerta.present();
-      });
+      .flatMap(() => this._agendamentosProvider.agenda(agendamento))
+      .subscribe(
+        (res) => {
+          // console.log(duplicado);
+          // if (duplicado) throw new Error('Este agendamento já foi realizado!');
+          // this.confirmaAgendamento(agendamento);
+          // .then(() => agendamento.confirmado = true, err => console.log(err))
+          // .then(() => this._dao.salva(agendamento))
+          // .then(() => agendamento.confirmado);
+        },
+        (err: Error) => {
+          // this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
+          this._alerta.setSubTitle(err.message);
+          this._alerta.present();
+        }
+      );
 
 
     // Observable.forkJoin(
