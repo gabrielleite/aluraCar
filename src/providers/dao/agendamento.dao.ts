@@ -11,11 +11,33 @@ export class AgendamentoDaoProvider {
     // let a = 1;
     // if (a==1) throw new Error("bla bla bla");
     let key = this._getKey(agendamento);
-    return this._storage
-              .set(key, agendamento)
-              .catch(() => {
-                throw new Error('Não foi possível salvar o agendamento!');
-              });
+    let promise =  this._storage
+                      .set(key, agendamento)
+                      .catch(() => {
+                        throw new Error('Não foi possível salvar o agendamento!');
+                      });
+    
+    return Observable.fromPromise(promise);
+  }
+
+  listaTodos() {
+    
+    let agendamentos: Agendamento[] = [];
+
+    let promise = this._storage.forEach((dado: Agendamento) => {
+        // let agendamento: Agendamento = {
+        //   carro: dado.valor, 
+        //   dado.nome, dado.endereco, 
+        //   dado.email, 
+        //   dado.data, 
+        //   dado.confirmado
+        // };
+
+        agendamentos.push(dado);
+    })
+    .then(() => agendamentos );
+
+    return Observable.fromPromise(promise);
   }
   
   ehAgendamentoDuplicado(agendamento: Agendamento) {

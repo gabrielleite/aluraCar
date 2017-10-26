@@ -67,6 +67,24 @@ export class CadastroPage {
 
     let mensagem = '';
 
+
+    // this._agendamentoDaoProvider.salva(agendamento)
+    //     .flatMap(() => this._agendamentosProvider.agenda(agendamento))
+    //     .flatMap(() => this._agendamentoDaoProvider.salva(agendamento))
+    //     .subscribe(
+    //       () => {
+    //         mensagem = 'Agendamento realizado com sucesso.';
+    //       },
+    //       (err: Error) => {
+    //         mensagem = err.message;
+    //       },
+    //       () => {
+    //         loader.dismiss();
+    //         this._alerta.setSubTitle(mensagem);
+    //         this._alerta.present();
+    //       }
+    //     );
+
     this._agendamentoDaoProvider
       .ehAgendamentoDuplicado(agendamento)
       .flatMap((ehDuplicado) => {
