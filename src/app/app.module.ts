@@ -17,6 +17,13 @@ import { AgendamentoDaoProvider } from '../providers/dao/agendamento.dao';
 import { EscolhaPage } from '../pages/escolha/escolha';
 import { CadastroPage } from '../pages/cadastro/cadastro';
 
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/retry';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/fromPromise';
+
 @NgModule({
   declarations: [
     MyApp,

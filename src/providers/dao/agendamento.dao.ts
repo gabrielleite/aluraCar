@@ -8,17 +8,14 @@ export class AgendamentoDaoProvider {
   constructor(private _storage: Storage) {}
     
   salva(agendamento: Agendamento) {
+    // let a = 1;
+    // if (a==1) throw new Error("bla bla bla");
     let key = this._getKey(agendamento);
-    let promise = this._storage
-                      .set(key, agendamento)
-                      .then(() => {
-                        return key;
-                      })
-                      .catch(() => {
-                        throw new Error('Não foi possível salvar o agendamento!');
-                      });
-
-    return Observable.fromPromise(promise);
+    return this._storage
+              .set(key, agendamento)
+              .catch(() => {
+                throw new Error('Não foi possível salvar o agendamento!');
+              });
   }
   
   ehAgendamentoDuplicado(agendamento: Agendamento) {

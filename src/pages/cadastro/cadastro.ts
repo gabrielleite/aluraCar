@@ -1,17 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Alert, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Alert, AlertController, LoadingController } from 'ionic-angular';
 import { Carro } from '../../models/carro';
 import { Agendamento } from '../../models/agendamento';
 import { AgendamentosProvider } from '../../providers/api/agendamentos/agendamentos.service';
 import { AgendamentoDaoProvider } from '../../providers/dao/agendamento.dao';
 import { HomePage } from '../home/home';
-import { Storage } from '@ionic/storage';
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'page-cadastro',
@@ -31,9 +24,9 @@ export class CadastroPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private _alertCtrl: AlertController,
+    private _loadingCtrl: LoadingController,
     private _agendamentosProvider: AgendamentosProvider,
-    private _agendamentoDaoProvider: AgendamentoDaoProvider,
-    private _storage: Storage) {
+    private _agendamentoDaoProvider: AgendamentoDaoProvider) {
       this._carro = this.navParams.get('carro');
       this._precoTotal = this.navParams.get('precoTotal');
 
@@ -57,6 +50,11 @@ export class CadastroPage {
       return ;
     }
 
+    let loader = this._loadingCtrl.create({
+      content: 'Aguarde o agendamento...'
+    });
+    loader.present();
+
     let agendamento: Agendamento = {
       carro: this._carro.nome,
       precoTotal: this._precoTotal,
@@ -67,69 +65,30 @@ export class CadastroPage {
       confirmado: false
     };
 
+    let mensagem = '';
+
     this._agendamentoDaoProvider
       .ehAgendamentoDuplicado(agendamento)
       .flatMap((ehDuplicado) => {
-        if (ehDuplicado) new Error('Agendamento existente!');
+        console.log('É duplicado? ' + ehDuplicado);
+        if (ehDuplicado) throw new Error('Agendamento existente!');
         return this._agendamentoDaoProvider.salva(agendamento);
       })
       .flatMap(() => this._agendamentosProvider.agenda(agendamento))
+      .flatMap(() => this._agendamentoDaoProvider.salva(agendamento))
       .subscribe(
-        (res) => {
-          // console.log(duplicado);
-          // if (duplicado) throw new Error('Este agendamento já foi realizado!');
-          // this.confirmaAgendamento(agendamento);
-          // .then(() => agendamento.confirmado = true, err => console.log(err))
-          // .then(() => this._dao.salva(agendamento))
-          // .then(() => agendamento.confirmado);
+        () => {
+          mensagem = 'Agendamento realizado com sucesso.';
         },
         (err: Error) => {
-          // this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
-          this._alerta.setSubTitle(err.message);
+          mensagem = err.message;
+        },
+        () => {
+          loader.dismiss();
+          this._alerta.setSubTitle(mensagem);
           this._alerta.present();
         }
       );
-
-
-    // Observable.forkJoin(
-    //   [this._agendamentosProvider
-    //   .agenda(agendamento)
-    //   .map(() => agendamento.confirmado = true),
-    //   this.salva(agendamento)]
-    // ).subscribe(
-    //   () => {
-    //     this._alerta.setSubTitle('Agendamento realizado com sucesso.');
-    //     this._alerta.present();
-    //   },
-    //   (err) => {
-    //     console.log(err);
-    //     this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
-    //     this._alerta.present();
-    //   },
-    //   () => {
-    //     console.log("terminou");
-    //   }
-    // );
-    
-    // this._agendamentosProvider
-    //   .agenda(agendamento)
-    //   .do(() => agendamento.confirmado = true)
-    //   // .flatMap(() => this.salva(agendamento))
-    //   // .finally(() => this.salva(agendamento))
-    //   .subscribe(
-    //     () => {
-    //       this._alerta.setSubTitle('Agendamento realizado com sucesso.');
-    //       this._alerta.present();
-    //     },
-    //     err => {
-    //       console.log(err);
-    //       this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
-    //       this._alerta.present();
-    //     },
-    //     () => {
-    //       console.log("terminou");
-    //     }
-    //   );
   }
 
   confirmaAgendamento(agendamento: Agendamento) {
