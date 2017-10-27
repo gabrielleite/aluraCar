@@ -23,8 +23,8 @@ export class AgendamentosProvider {
                   .set('endereco', agendamento.endereco)
                   .set('email', agendamento.email)
                   .set('dataAgendamento', agendamento.data);
+                  // .get<Agendamento>(`${this._url}/salvarpedido?carro=${agendamento.carro}&nome=${agendamento.cliente}&preco=${agendamento.precoTotal}&endereco=${agendamento.endereco}&email=${agendamento.email}&dataAgendamento=${agendamento.data}`)
     return this._http
-            // .get<Agendamento>(`${this._url}/salvarpedido?carro=${agendamento.carro}&nome=${agendamento.cliente}&preco=${agendamento.precoTotal}&endereco=${agendamento.endereco}&email=${agendamento.email}&dataAgendamento=${agendamento.data}`)
             .get<Agendamento>(`${this._url}/salvarpedido`, { params: params })
             .retry(3)
             .do(() => agendamento.confirmado = true)

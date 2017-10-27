@@ -17,6 +17,7 @@ import { AgendamentoDaoProvider } from '../providers/dao/agendamento.dao';
 import { EscolhaPage } from '../pages/escolha/escolha';
 import { CadastroPage } from '../pages/cadastro/cadastro';
 import { ListaAgendamentosPage } from '../pages/lista-agendamentos/lista-agendamentos';
+import { LoginPage } from '../pages/login/login';
 
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
@@ -31,7 +32,8 @@ import 'rxjs/add/observable/fromPromise';
     HomePage,
     EscolhaPage,
     CadastroPage,
-    ListaAgendamentosPage
+    ListaAgendamentosPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,8 @@ import 'rxjs/add/observable/fromPromise';
     HomePage,
     EscolhaPage,
     CadastroPage,
-    ListaAgendamentosPage
+    ListaAgendamentosPage,
+    LoginPage
   ],
   providers: [
     StatusBar,

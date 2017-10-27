@@ -9,8 +9,16 @@
 
 <ion-content padding>
   <ion-list>
-      <ion-item *ngFor="let agendamento of agendamentos">
-        {{agendamento.carro}} - {{agendamento.precoTotal}}
-      </ion-item>
+
+    <ion-item [class.falha]="!agendamento.confirmado"
+      *ngFor="let agendamento of agendamentos">
+        {{agendamento.carro}} - R${{agendamento.precoTotal}}
+
+        <button ion-button clear icon-only item-end
+          *ngIf="!agendamento.confirmado" (click)="reenvia(agendamento)">
+            <ion-icon name="refresh"></ion-icon>
+        </button>
+    </ion-item>
+
   </ion-list>
 </ion-content>

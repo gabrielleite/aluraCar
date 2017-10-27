@@ -5,6 +5,7 @@ import { Agendamento } from '../../models/agendamento';
 import { AgendamentosProvider } from '../../providers/api/agendamentos/agendamentos.service';
 import { AgendamentoDaoProvider } from '../../providers/dao/agendamento.dao';
 import { HomePage } from '../home/home';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'page-cadastro',
@@ -26,7 +27,7 @@ export class CadastroPage {
     private _alertCtrl: AlertController,
     private _loadingCtrl: LoadingController,
     private _agendamentosProvider: AgendamentosProvider,
-    private _agendamentoDaoProvider: AgendamentoDaoProvider) {
+    private _agendamentoDao: AgendamentoDaoProvider) {
       this._carro = this.navParams.get('carro');
       this._precoTotal = this.navParams.get('precoTotal');
 
@@ -85,15 +86,15 @@ export class CadastroPage {
     //       }
     //     );
 
-    this._agendamentoDaoProvider
+    this._agendamentoDao
       .ehAgendamentoDuplicado(agendamento)
       .flatMap((ehDuplicado) => {
         console.log('É duplicado? ' + ehDuplicado);
         if (ehDuplicado) throw new Error('Agendamento existente!');
-        return this._agendamentoDaoProvider.salva(agendamento);
+        return this._agendamentoDao.salva(agendamento);
       })
       .flatMap(() => this._agendamentosProvider.agenda(agendamento))
-      .flatMap(() => this._agendamentoDaoProvider.salva(agendamento))
+      .flatMap(() => this._agendamentoDao.salva(agendamento))
       .subscribe(
         () => {
           mensagem = 'Agendamento realizado com sucesso.';
@@ -104,25 +105,6 @@ export class CadastroPage {
         () => {
           loader.dismiss();
           this._alerta.setSubTitle(mensagem);
-          this._alerta.present();
-        }
-      );
-  }
-
-  confirmaAgendamento(agendamento: Agendamento) {
-    this._agendamentosProvider
-      .agenda(agendamento)
-      .subscribe(
-        () => {
-          this._alerta.setSubTitle('Agendamento realizado com sucesso.');
-        },
-        (err) => {
-          console.log(err);
-          this._alerta.setSubTitle('Não foi possível realizar o agendamento!');
-        },
-        () => {
-          console.log("terminou");
-          this._agendamentoDaoProvider.salva(agendamento);
           this._alerta.present();
         }
       );
