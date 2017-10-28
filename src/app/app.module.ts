@@ -23,6 +23,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/retry';
+import 'rxjs/add/operator/finally';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/fromPromise';
 

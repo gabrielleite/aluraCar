@@ -95,17 +95,17 @@ export class CadastroPage {
       })
       .flatMap(() => this._agendamentosProvider.agenda(agendamento))
       .flatMap(() => this._agendamentoDao.salva(agendamento))
+      .finally(() => {
+        loader.dismiss();
+        this._alerta.setSubTitle(mensagem);
+        this._alerta.present();
+      })
       .subscribe(
         () => {
           mensagem = 'Agendamento realizado com sucesso.';
         },
         (err: Error) => {
           mensagem = err.message;
-        },
-        () => {
-          loader.dismiss();
-          this._alerta.setSubTitle(mensagem);
-          this._alerta.present();
         }
       );
   }
