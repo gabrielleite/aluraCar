@@ -86,15 +86,8 @@ export class CadastroPage {
     //       }
     //     );
 
-    this._agendamentoDao
-      .ehAgendamentoDuplicado(agendamento)
-      .flatMap((ehDuplicado) => {
-        console.log('É duplicado? ' + ehDuplicado);
-        if (ehDuplicado) throw new Error('Agendamento existente!');
-        return this._agendamentoDao.salva(agendamento);
-      })
-      .flatMap(() => this._agendamentosProvider.agenda(agendamento))
-      .flatMap(() => this._agendamentoDao.salva(agendamento))
+    this._agendamentosProvider
+      .metodoX(agendamento)
       .finally(() => {
         loader.dismiss();
         this._alerta.setSubTitle(mensagem);
