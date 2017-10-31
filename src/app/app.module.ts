@@ -10,14 +10,18 @@ import { HomePage } from '../pages/home/home';
 // ======================================================================
 import { HttpClientModule } from "@angular/common/http";
 import { IonicStorageModule } from '@ionic/storage';
+
 import { ApiProvider } from '../providers/api/api.service';
 import { CarrosProvider } from '../providers/api/carros/carros.service';
 import { AgendamentosProvider } from '../providers/api/agendamentos/agendamentos.service';
 import { AgendamentoDaoProvider } from '../providers/dao/agendamento.dao';
+import { UsuariosProvider } from '../providers/api/usuarios/usuarios.service';
+
 import { EscolhaPage } from '../pages/escolha/escolha';
 import { CadastroPage } from '../pages/cadastro/cadastro';
 import { ListaAgendamentosPage } from '../pages/lista-agendamentos/lista-agendamentos';
 import { LoginPage } from '../pages/login/login';
+import { PerfilPage } from '../pages/perfil/perfil';
 
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
@@ -34,7 +38,8 @@ import 'rxjs/add/observable/fromPromise';
     EscolhaPage,
     CadastroPage,
     ListaAgendamentosPage,
-    LoginPage
+    LoginPage,
+    PerfilPage
   ],
   imports: [
     BrowserModule,
@@ -53,7 +58,8 @@ import 'rxjs/add/observable/fromPromise';
     EscolhaPage,
     CadastroPage,
     ListaAgendamentosPage,
-    LoginPage
+    LoginPage,
+    PerfilPage
   ],
   providers: [
     StatusBar,
@@ -62,7 +68,8 @@ import 'rxjs/add/observable/fromPromise';
     ApiProvider,
     CarrosProvider,
     AgendamentosProvider,
-    AgendamentoDaoProvider
+    AgendamentoDaoProvider,
+    UsuariosProvider
   ]
 })
 export class AppModule {}
