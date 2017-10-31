@@ -22,7 +22,7 @@ export class CarrosProvider {
     // para obter a resposta em outro formato
     // .get('/textfile.txt', {responseType: 'text'})
     return this._http
-            .get<Carro[]>(this._url);
+            .get<Carro[]>(this._url+'/api/carro/listaTodos');
   }
 
 }

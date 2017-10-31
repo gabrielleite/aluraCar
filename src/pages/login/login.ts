@@ -23,28 +23,29 @@ export class LoginPage {
   efetuaLogin() {
     console.log(this.email);
     console.log(this.senha);
+    this.navCtrl.setRoot(HomePage);
 
-    let loading = this._loadingCtrl.create({
-      content: 'Efetuando login, aguarde...'
-    });
-    loading.present();
+    // let loading = this._loadingCtrl.create({
+    //   content: 'Efetuando login, aguarde...'
+    // });
+    // loading.present();
 
-    this._usuariosProvider
-      .efetuaLogin(this.email, this.senha)
-      .subscribe(
-        (usuario) => {
-          loading.dismiss();
-          this.navCtrl.setRoot(HomePage)
-        },
-        (err) => {
-          loading.dismiss();
-          this._alertCtrl.create({
-            title: 'Problema no login',
-            subTitle: 'Email ou senha inválidos. Verifique!',
-            buttons: [{ text: 'Ok'}]
-          }).present();
-        }
-      );
+    // this._usuariosProvider
+    //   .efetuaLogin(this.email, this.senha)
+    //   .subscribe(
+    //     (usuario) => {
+    //       loading.dismiss();
+    //       this.navCtrl.setRoot(HomePage);
+    //     },
+    //     (err) => {
+    //       loading.dismiss();
+    //       this._alertCtrl.create({
+    //         title: 'Problema no login',
+    //         subTitle: 'Email ou senha inválidos. Verifique!',
+    //         buttons: [{ text: 'Ok'}]
+    //       }).present();
+    //     }
+    //   );
   }
 
 }
