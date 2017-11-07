@@ -1,0 +1,20 @@
+myapp {
+    .cabecalho-menu {
+        background-image: url('http://www.vactualart.com/images/news/1.jpg');
+        height: 150px;
+
+        ion-avatar img {
+            width: 50px;
+            height: 50px;
+        }
+
+        h2 {
+            color: white;
+            font-weight: bold;
+        }
+
+        p {
+            color: #ddd;
+        }
+    }
+}

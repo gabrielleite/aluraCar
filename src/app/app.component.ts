@@ -9,6 +9,7 @@ import { LoginPage } from '../pages/login/login';
 import { PerfilPage } from '../pages/perfil/perfil';
 
 @Component({
+  selector: 'myapp',
   templateUrl: 'app.html'
 })
 export class MyApp {
@@ -17,8 +18,8 @@ export class MyApp {
   rootPage:any = LoginPage;
 
   public paginas = [
-    {titulo: 'Agendamentos', componente: ListaAgendamentosPage },
-    { titulo: 'Perfil', componente: PerfilPage }
+    {titulo: 'Agendamentos', icone: 'calendar', componente: ListaAgendamentosPage },
+    { titulo: 'Perfil', icone: 'person', componente: PerfilPage }
   ];
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
