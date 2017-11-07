@@ -1,4 +1,5 @@
 export interface Carro {
     nome: string;
-    preco: number
+    preco: number;
+    fotoUrl: string;
 }

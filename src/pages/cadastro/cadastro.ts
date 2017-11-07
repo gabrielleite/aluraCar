@@ -110,6 +110,10 @@ export class CadastroPage {
       );
   }
 
+  teste(f) {
+    console.log(f);
+  }
+
   // salva(agendamento: Agendamento) {
   //   let a = 1;
   //   if (a==1) throw new Error("bla bla bla");
