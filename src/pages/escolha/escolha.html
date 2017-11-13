@@ -11,7 +11,11 @@
 </ion-header>
 
 <ion-content>
-  <img src="{{carro.fotoUrl}}"/>
+  <ion-slides pager="true" centeredSlides>
+    <ion-slide *ngFor="let foto of carro.fotos">
+      <img src="{{foto}}"/>
+    </ion-slide>
+  </ion-slides>
 
   <ion-item-divider color="light">
     <ion-icon name="car" item-left></ion-icon>
