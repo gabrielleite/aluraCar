@@ -4,12 +4,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CarrosProvider } from '../../providers/api/carros/carros.service';
 import { EscolhaPage } from '../escolha/escolha';
 import { Carro } from '../../models/carro';
+import { NavLifecycles } from '../../utils/ionic/nav-lifecycles';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit {
+export class HomePage implements NavLifecycles {
   private _carros: Carro[];
 
   constructor(public navCtrl: NavController,
