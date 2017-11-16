@@ -57,11 +57,11 @@ export class CadastroPage {
     loader.present();
 
     let agendamento: Agendamento = {
-      carro: this._carro.nome,
+      modeloCarro: this._carro.nome,
       precoTotal: this._precoTotal,
-      cliente: this.nome,
-      endereco: this.endereco,
-      email: this.email,
+      nomeCliente: this.nome,
+      enderecoCliente: this.endereco,
+      emailCliente: this.email,
       data: this.data,
       confirmado: false
     };

@@ -11,21 +11,21 @@ export class AgendamentosProvider {
   _http: HttpClient;
 
   constructor(private _api: ApiProvider) {
-    this._url = this._api.url;
+    this._url = this._api.url+'/api/agendamento';
     this._http = this._api.http;
   }
 
   agenda(agendamento: Agendamento): Observable<Agendamento> {
-    let params = new HttpParams()
-                  .set('carro', agendamento.carro)
-                  .set('nome', agendamento.cliente)
-                  .set('preco', agendamento.precoTotal.toString())
-                  .set('endereco', agendamento.endereco)
-                  .set('email', agendamento.email)
-                  .set('dataAgendamento', agendamento.data);
+    // let params = new HttpParams()
+    //               .set('modeloCarro', agendamento.carro)
+    //               .set('nomeCliente', agendamento.cliente)
+    //               .set('precoTotal', agendamento.precoTotal.toString())
+    //               .set('enderecoCliente', agendamento.endereco)
+    //               .set('emailCliente', agendamento.email)
+    //               .set('data', agendamento.data);
                   // .get<Agendamento>(`${this._url}/salvarpedido?carro=${agendamento.carro}&nome=${agendamento.cliente}&preco=${agendamento.precoTotal}&endereco=${agendamento.endereco}&email=${agendamento.email}&dataAgendamento=${agendamento.data}`)
     return this._http
-            .get<Agendamento>(`${this._url}/salvarpedido`, { params: params })
+            .post(`${this._url}/agenda`, agendamento)
             .retry(3)
             .do(() => agendamento.confirmado = true)
             .catch(err => Observable.throw(new Error('Não foi possível realizar o agendamento!')));

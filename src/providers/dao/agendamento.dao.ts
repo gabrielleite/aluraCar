@@ -57,6 +57,6 @@ export class AgendamentoDaoProvider {
   }
   
   private _getKey(agendamento: Agendamento) {
-    return agendamento.email + agendamento.data.substr(0,10);
+    return agendamento.emailCliente + agendamento.data.substr(0,10);
   }
 }

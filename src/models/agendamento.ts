@@ -1,9 +1,9 @@
 export interface Agendamento {
-    carro: string;
+    modeloCarro: string;
     precoTotal: number;
-    cliente: string;
-    endereco: string;
-    email: string;
+    nomeCliente: string;
+    enderecoCliente: string;
+    emailCliente: string;
     data: string;
     confirmado?: boolean;
 }
