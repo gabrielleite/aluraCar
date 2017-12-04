@@ -7,6 +7,8 @@ import { AgendamentoDaoProvider } from '../../providers/dao/agendamento.dao';
 import { HomePage } from '../home/home';
 import { Observable } from 'rxjs/Observable';
 
+import { Storage } from '@ionic/storage';
+
 @Component({
   selector: 'page-cadastro',
   templateUrl: 'cadastro.html',
@@ -27,7 +29,8 @@ export class CadastroPage {
     private _alertCtrl: AlertController,
     private _loadingCtrl: LoadingController,
     private _agendamentosProvider: AgendamentosProvider,
-    private _agendamentoDao: AgendamentoDaoProvider) {
+    private _agendamentoDao: AgendamentoDaoProvider,
+    private _storage: Storage) {
       this._carro = this.navParams.get('carro');
       this._precoTotal = this.navParams.get('precoTotal');
 
@@ -86,41 +89,59 @@ export class CadastroPage {
     //       }
     //     );
 
-    this._agendamentoDao
-      .ehAgendamentoDuplicado(agendamento)
-      .flatMap((ehDuplicado) => {
-        console.log('É duplicado? ' + ehDuplicado);
-        if (ehDuplicado) throw new Error('Agendamento existente!');
-        return this._agendamentoDao.salva(agendamento);
-      })
-      .flatMap(() => this._agendamentosProvider.agenda(agendamento))
-      .flatMap(() => this._agendamentoDao.salva(agendamento))
-      .finally(() => {
-        loader.dismiss();
-        this._alerta.setSubTitle(mensagem);
-        this._alerta.present();
-      })
-      .subscribe(
-        () => {
-          mensagem = 'Agendamento realizado com sucesso.';
-        },
-        (err: Error) => {
-          mensagem = err.message;
-        }
-      );
+    // this._agendamentoDao
+    //   .ehAgendamentoDuplicado(agendamento)
+    //   .flatMap((ehDuplicado) => {
+    //     console.log('É duplicado? ' + ehDuplicado);
+    //     if (ehDuplicado) throw new Error('Agendamento existente!');
+    //     return this._agendamentoDao.salva(agendamento);
+    //   })
+    //   .flatMap(() => this._agendamentosProvider.agenda(agendamento))
+    //   .flatMap(() => this._agendamentoDao.salva(agendamento))
+    //   .finally(() => {
+    //     loader.dismiss();
+    //     this._alerta.setSubTitle(mensagem);
+    //     this._alerta.present();
+    //   })
+    //   .subscribe(
+    //     () => {
+    //       mensagem = 'Agendamento realizado com sucesso.';
+    //     },
+    //     (err: Error) => {
+    //       mensagem = err.message;
+    //     }
+    //   ); 
+
+    this._agendamentosProvider
+            .agenda(agendamento)
+            .flatMap((valor) => {
+                let observable = this.salva(agendamento);
+                if (valor instanceof Error) {
+                  throw valor;
+                }
+                return observable;
+              }
+            )
+            .finally(
+              () => {
+                loader.dismiss();
+                this._alerta.setSubTitle(mensagem);
+                this._alerta.present();
+              }
+            )
+            .subscribe(
+              () => mensagem = 'Agendamento realizado com sucesso',
+              (err: Error)  => mensagem = err.message
+            );
   }
 
-  teste(f) {
-    console.log(f);
+  salva(agendamento: Agendamento) {
+    // let a = 1;
+    // if (a==1) return Observable.throw(new Error("bla bla bla"));
+    let key = this.email + this.data.substr(0,10);
+    // return this._storage.set(key, agendamento);
+    return Observable.fromPromise(this._storage.set(key, agendamento));
   }
-
-  // salva(agendamento: Agendamento) {
-  //   let a = 1;
-  //   if (a==1) throw new Error("bla bla bla");
-  //   let key = agendamento.email + agendamento.data.substr(0,10);
-  //   // return this._storage.set(key, agendamento);
-  //   return Observable.fromPromise(this._storage.set(key, agendamento));
-  // }
 
   get carro() {
     return this._carro;
