@@ -20,12 +20,9 @@ export class UsuariosProvider {
   }
 
   efetuaLogin(email: string, senha: string): Observable<Usuario> {
-    let params = new HttpParams()
-                      .set('email', email)
-                      .set('senha', senha);
     
     return this._http
-                .get<Usuario>(`${this._url}/login`, { params: params })
+                .post<Usuario>(`${this._url}/api/login`, { email, senha })
                 .do((usuario: Usuario) => this._usuarioLogado = usuario);
   }
 
