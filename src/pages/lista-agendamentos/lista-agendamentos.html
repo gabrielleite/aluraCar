@@ -12,7 +12,7 @@
 
     <ion-item [class.falha]="!agendamento.confirmado"
       *ngFor="let agendamento of agendamentos">
-        {{agendamento.carro}} - R${{agendamento.precoTotal}}
+        {{agendamento.modeloCarro}} - R${{agendamento.precoTotal}}
 
         <button ion-button clear icon-only item-end
           *ngIf="!agendamento.confirmado" (click)="reenvia(agendamento)">
