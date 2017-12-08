@@ -14,13 +14,13 @@
             <ion-item class="cabecalho-menu">
                 <div>
                     <ion-avatar item-start>
-                        <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ts-woody.png">
+                        <img src="assets/img/avatar-ts-woody.png">
                     </ion-avatar>
                 </div>
                 <h2>Woody</h2>
                 <p>woody@alura.com.br</p>
             </ion-item>
-            <ion-list inset>
+            <ion-list>
                 <button ion-item menuClose *ngFor="let pagina of paginas"
                     (click)="abrePagina(pagina.componente)">
                     
