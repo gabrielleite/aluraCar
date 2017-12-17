@@ -1,7 +1,11 @@
 myapp {
+    #cabecalho-menu .item-inner {
+        border: none;
+    }
     .cabecalho-menu {
-        background-image: url('../assets/img/material-design-background-2.jpg');
+        background-image: url('../assets/img/material-design-background.jpg');
         height: 150px;
+        margin-bottom: 10px;
 
         ion-avatar img {
             width: 50px;
