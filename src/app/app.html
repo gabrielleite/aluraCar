@@ -1,9 +1,9 @@
 <ion-split-pane>
     <!-- 
         VERIFICAR SE USUÁRIO ESTÁ LOGADO, ENTÃO...
-        <ion-menu [content]="conteudo" enabled="false">
+        <ion-menu [content]="conteudo" [enabled]="false">
     -->
-    <ion-menu [content]="conteudo">
+    <ion-menu [content]="conteudo" [enabled]="usuarioLogado">
         <ion-content>
             <ion-item id="cabecalho-menu" class="cabecalho-menu">
                 <div>
