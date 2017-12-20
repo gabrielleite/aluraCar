@@ -6,27 +6,47 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <ion-item no-lines>
+    <div class="avatar-wrapper">
+      <ion-avatar>
+        <img src="assets/img/avatar-profile.jpg">
+      </ion-avatar>
+
+      <button class="btn-tirar-foto" ion-button icon-only round>
+        <ion-icon name="camera"></ion-icon>
+      </button>
+    </div>
+  </ion-item>
+
   <ion-card>
 
     <ion-item>
         <!-- <ion-avatar item-left *ngIf="url">
           <img [src]="url">
         </ion-avatar> -->
-        {{ usuarioLogado.nome }}
+        <ion-icon name="contact" item-left></ion-icon>
+        <!-- {{ usuarioLogado.nome }} -->
+        Gabriel Leite
         <!-- <button ion-button outline item-right (click)="tiraFoto()">
             <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
         </button> -->
     </ion-item>
 
     <ion-item>
-      <p>{{ usuarioLogado.dataNascimento }}</p>
+      <ion-icon name="calendar" item-left></ion-icon>
+      <!-- <p>{{ usuarioLogado.dataNascimento }}</p> -->
+      <p>24/04/1990</p>
     </ion-item>
     <ion-item>
-      <p>{{ usuarioLogado.email }}</p>
+      <ion-icon name="at" item-left></ion-icon>
+      <!-- <p>{{ usuarioLogado.email }}</p> -->
+      <p>gabriel.leite@caelum.com.br</p>
     </ion-item>
     <ion-item>
-      <p>{{ usuarioLogado.telefone }}</p>
+      <ion-icon name="call" item-left></ion-icon>
+      <!-- <p>{{ usuarioLogado.telefone }}</p> -->
+      2112345678
     </ion-item>
   </ion-card>
 </ion-content>
