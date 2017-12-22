@@ -1,9 +1,5 @@
 <ion-split-pane>
-    <!-- 
-        VERIFICAR SE USUÁRIO ESTÁ LOGADO, ENTÃO...
-        <ion-menu [content]="conteudo" [enabled]="false">
-    -->
-    <ion-menu [content]="conteudo" [enabled]="usuarioLogado">
+    <ion-menu [content]="conteudo" *ngIf="usuarioLogado">
         <ion-content>
             <ion-item id="cabecalho-menu" class="cabecalho-menu">
                 <div>
@@ -11,8 +7,8 @@
                         <img src="assets/img/avatar-profile.jpg">
                     </ion-avatar>
                 </div>
-                <h2>Gabriel Leite</h2>
-                <p>gabriel.leite@alura.com.br</p>
+                <h2>{{ usuarioLogado.nome }}</h2>
+                <p>{{ usuarioLogado.email }}</p>
             </ion-item>
             <ion-list>
                 <button ion-item menuClose *ngFor="let pagina of paginas"
